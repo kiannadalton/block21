@@ -7,6 +7,9 @@ const API_URL = `https://fsa-crud-2aa9294fe819.herokuapp.com/api/${COHORT}/recip
  * 👉 STEP 1: Create an object called state that holds an array for recipe objects
  */
 
+const state = {
+  recipes: [],
+};
 /**
  * 👉 STEP 2: Complete the function so that it:
  *    - uses `fetch` to make a GET request to the API
@@ -16,6 +19,13 @@ const API_URL = `https://fsa-crud-2aa9294fe819.herokuapp.com/api/${COHORT}/recip
  */
 const fetchAllRecipes = async () => {
   try {
+    const response = await fetch(API_URL);
+    const data = await response.json();
+    //storing the data in the recipe array:
+    // need to do data.data since the data key in the data object has the array of recipe objects in it
+    state.recipes = data.data;
+
+    renderAllRecipes();
   } catch (error) {
     console.log(error);
   }
@@ -29,8 +39,25 @@ const fetchAllRecipes = async () => {
  *
  * Note: date isn't used in this API but you will need to know how to work with it in the workshop
  */
-const createNewRecipe = async (name, imageUrl, description, date) => {
+const createNewRecipe = async (name, imageUrl, description) => {
   try {
+    await fetch(API_URL, {
+      method: "POST",
+      //headers is found in inspect > Network > recipes > Headers
+      headers: {
+        // the below is needed for POST and PUT
+        "Content-Type": "application/json",
+      },
+      //converts to a JSON object
+      body: JSON.stringify({
+        // can also just write name, imageUrl, description
+        name: name,
+        imageUrl: imageUrl,
+        description: description,
+      }),
+    });
+    //dont need to say await fetchAllRecipes(); since it's it's the last line of code in the try block
+    fetchAllRecipes();
   } catch (error) {
     console.log(error);
   }
@@ -43,6 +70,11 @@ const createNewRecipe = async (name, imageUrl, description, date) => {
  */
 const removeRecipe = async (id) => {
   try {
+    await fetch(`${API_URL}/${id}`, {
+      method: "DELETE",
+      // No body needed for deleting. Since no body, no header is needed.
+    });
+    fetchAllRecipes();
   } catch (error) {
     console.log(error);
   }
