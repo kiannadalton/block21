@@ -16,8 +16,7 @@ async function getArtists() {
     state.artists = data.data;
     console.log(state.artists);
 
-    // uncomment once completed
-    // renderArtists();
+    renderArtists();
   } catch (error) {
     console.log(error);
   }
@@ -50,18 +49,23 @@ function renderArtists() {
   const artistsContainer = document.getElementById("artists");
   const artistList = state.artists;
 
-  // if (artistList.length === 0){
-  // artistsContainer.innerHTML = "<h3>No artists listed.</h3>";
-  //   return;
-  // };
+  if (artistList.length === 0) {
+    artistsContainer.innerHTML = "<h3>No artists listed.</h3>";
+    return;
+  }
 
   // resets artistsContainer to prevent duplicates
-  // artistsContainer.innerHTML = "";
-  // forEach artists, we want to create an li (const artistCard), and do innerHTML with name, image, and bio
-  // `<h3>Name: ${name}</h3>
-  // <img src="${image}" alt="${name}">
-  // <p>${bio}</p>`
-  // artistsContainer.appendChild(artistCard)
+  artistsContainer.innerHTML = "";
+ 
+  const artistCard = artistList.forEach((artist) => {
+    const artistElement = document.createElement("li");
+    artistElement.innerHTML = `
+    <h3>Name: ${artist.name}</h3>
+    <img src="${artist.imageUrl}" alt="${artist.name}">
+    <p>${artist.description}</p>`;
+
+    artistsContainer.appendChild(artistElement);
+  });
 }
 
 // Add artist with form data when the form is submitted
