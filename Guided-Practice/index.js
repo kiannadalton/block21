@@ -7,7 +7,6 @@ const state = {
   artists: [],
 };
 
-console.log(API_URL);
 /** Updates state with artists from API */
 async function getArtists() {
   try {
