@@ -8,6 +8,44 @@
     <script src="index.js" defer></script>
   </head>
   <body>
-    <h1>Party Planner Page</h1>
+    <header>
+      <h1>Party Planner Guide</h1>
+    </header>
+
+    <div id="new-party-form-container">
+      <form id="new-party-form">
+        <label for="name">
+          Name
+          <input type="text" id="name" name="name" placeholder="Name" />
+        </label>
+        <label for="imageUrl">
+          Image URL
+          <input
+            type="text"
+            id="imageUrl"
+            name="imageUrl"
+            placeholder="Image URL"
+          />
+        </label>
+        <label for="description">
+          Description
+          <textarea
+            id="description"
+            name="description"
+            placeholder="Description"
+          ></textarea>
+        </label>
+        <label>
+          Date
+          <input type="date" name="date" />
+        </label>
+        <label for="location">
+          Location
+          <input type="text" id="location" name="location" placeholder="Name" />
+        </label>
+        <button type="submit">Create</button>
+      </form>
+    </div>
+    <div id="party-container"></div>
   </body>
 </html>

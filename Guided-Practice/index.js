@@ -56,8 +56,8 @@ function renderArtists() {
 
   // resets artistsContainer to prevent duplicates
   artistsContainer.innerHTML = "";
- 
-  const artistCard = artistList.forEach((artist) => {
+
+  artistList.forEach((artist) => {
     const artistElement = document.createElement("li");
     artistElement.innerHTML = `
     <h3>Name: ${artist.name}</h3>
