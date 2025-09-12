@@ -28,8 +28,8 @@ async function addNewEvent(name, description, date, location) {
         name,
         description,
         date,
-        location
-      })
+        location,
+      }),
     });
 
     getAllEvents();
@@ -42,7 +42,7 @@ async function addNewEvent(name, description, date, location) {
 async function deleteEvent(id) {
   try {
     await fetch(`${API_URL}/${id}`, {
-        method: "DELETE"
+      method: "DELETE",
     });
 
     getAllEvents();
@@ -51,18 +51,43 @@ async function deleteEvent(id) {
   }
 }
 
+//* Completed
 function renderEvents() {
   const eventContainer = document.getElementById("party-container");
   const eventList = state.events;
   // check to see if array is empty
-  if(eventList.length === 0){
+  if (eventList.length === 0) {
     eventContainer.innerHTML = "<h3>No events are planned at this time.</h3>";
     return;
   }
-  // clear html of container .innerHTML = "";
+  // clears html of container
+  eventContainer.innerHTML = "";
 
-  // add div element with class and delete buttohn
-  // append to container
+  eventList.forEach((party) => {
+    const eventCard = document.createElement("div");
+    eventCard.classList = "party-card";
+    eventCard.innerHTML = `
+        <h3>${party.name}</h3>
+        <p>${party.description}</p>
+        <p>${party.date}</p>
+        <p>${party.location}</p>
+        <button class="delete-button" data-id="${party.id}">Delete</button>
+        `;
+
+    eventContainer.appendChild(eventCard);
+
+    //use eventCard instead of document
+    const deleteButton = eventCard.querySelector(".delete-button");
+
+    deleteButton.addEventListener("click", (event) => {
+      try {
+        event.preventDefault();
+        deleteEvent(party.id);
+      } catch (error) {
+        console.log(error);
+      }
+    });
+  });
 }
 
 function addListenerToForm() {
