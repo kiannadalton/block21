@@ -12,7 +12,8 @@ async function getAllEvents() {
     const response = await fetch(API_URL);
     const data = await response.json();
     state.events = data.data;
-    // artists will be rendered in the render function below.
+
+    renderEvents();
   } catch (error) {
     console.log(error);
   }
@@ -23,11 +24,12 @@ async function addNewEvent(name, description, date, location) {
   try {
     await fetch(API_URL, {
       method: "POST",
-      header: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         name,
         description,
-        date,
+        // need to convert date so that it's readable to the API
+        date: new Date(date).toISOString(),
         location,
       }),
     });
@@ -76,7 +78,7 @@ function renderEvents() {
 
     eventContainer.appendChild(eventCard);
 
-    //use eventCard instead of document
+    //use eventCard instead of document so that it attaches the click event with that card's specific id
     const deleteButton = eventCard.querySelector(".delete-button");
 
     deleteButton.addEventListener("click", (event) => {
@@ -90,13 +92,31 @@ function renderEvents() {
   });
 }
 
+//* Completed
 function addListenerToForm() {
+  const form = document.getElementById("new-party-form");
   // make sure to add event.preventDefault();
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    await addNewEvent(
+      form.name.value,
+      form.description.value,
+      form.date.value,
+      form.location.value
+    );
+
+    // clears form
+    form.name.value = "";
+    form.description.value = "";
+    form.date.value = "";
+    form.location.value = "";
+  });
 }
 
 async function render() {
   await getAllEvents();
-  renderEvents();
+
+  addListenerToForm();
 }
 
 render();
